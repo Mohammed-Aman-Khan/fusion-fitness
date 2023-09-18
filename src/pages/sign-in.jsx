@@ -9,6 +9,12 @@ import { useDispatch } from "react-redux";
 import { signIn } from "@/redux/slices/AuthSlice";
 import { useRouter } from "next/router";
 
+export const getStaticProps = async () => {
+  return {
+    props: {},
+  };
+};
+
 const SignInPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
