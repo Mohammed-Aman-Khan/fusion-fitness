@@ -294,7 +294,7 @@ const Index = () => {
             variant="contained"
             onClick={() => enroll(programCode, duration, startingDate)}
           >
-            Submit
+            Purchase
           </LoadingButton>
         </DialogActions>
       </Dialog>
