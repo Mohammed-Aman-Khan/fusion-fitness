@@ -1,6 +1,12 @@
-import React from "react";
-import { Box, Typography, TextField, Button, Grid } from "@mui/material";
-import { Email, Lock, Person } from "@mui/icons-material";
+import React, { useState } from "react";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import LoadingButton from "@mui/lab/LoadingButton";
+import Grid from "@mui/material/Grid";
+import Email from "@mui/icons-material/Email";
+import Lock from "@mui/icons-material/Lock";
+import Person from "@mui/icons-material/Person";
 import { vh, vw } from "@/utils/responsive";
 import Link from "next/link";
 import IconButton from "@mui/material/IconButton";
@@ -18,9 +24,11 @@ export const getStaticProps = async () => {
 const SignUpPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     try {
+      setLoading(true);
       e.preventDefault();
       const formData = new FormData(e.target);
       const name = formData.get("name");
@@ -40,12 +48,15 @@ const SignUpPage = () => {
       if (data.success) {
         e.target.reset();
         dispatch(signIn(data.user._id));
+        setLoading(false);
         router.push("/");
       } else {
         throw new Error(data.message || "Unknown Error");
       }
     } catch (error) {
       alert(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -72,6 +83,7 @@ const SignUpPage = () => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
+                disabled={loading}
                 variant="outlined"
                 required
                 fullWidth
@@ -85,6 +97,7 @@ const SignUpPage = () => {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                disabled={loading}
                 variant="outlined"
                 required
                 fullWidth
@@ -113,7 +126,8 @@ const SignUpPage = () => {
               />
             </Grid>
           </Grid>
-          <Button
+          <LoadingButton
+            loading={loading}
             type="submit"
             fullWidth
             variant="contained"
@@ -121,7 +135,7 @@ const SignUpPage = () => {
             sx={{ mt: 3, borderRadius: "10px" }}
           >
             Sign Up
-          </Button>
+          </LoadingButton>
           <Typography variant="body2" mt={2}>
             Already have an account? <Link href="/sign-in">Sign In</Link>
           </Typography>

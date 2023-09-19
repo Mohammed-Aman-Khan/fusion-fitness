@@ -1,7 +1,7 @@
 import useClamp from "@/hooks/useClamp";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
 import { formatCurrency, toKebabCase } from "@/utils/helpers";
@@ -17,6 +17,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import moment from "moment";
+import { LoadingButton } from "@mui/lab";
 
 const PROGRAMS = [
   {
@@ -101,6 +102,7 @@ const Index = () => {
   const clamp = useClamp();
   const router = useRouter();
   const { isLoggedIn, userId } = useSelector((state) => state.auth);
+  const [loading, setLoading] = useState(false);
   const [enrollDialog, setEnrollDialog] = useState(false);
   const [programCode, setProgramCode] = useState("");
   const [startingDate, setStartingDate] = useState(moment());
@@ -108,6 +110,7 @@ const Index = () => {
 
   const enroll = async (program_code, duration, startingDate) => {
     try {
+      setLoading(true);
       const response = await fetch("/api/enroll", {
         method: "POST",
         headers: {
@@ -129,11 +132,14 @@ const Index = () => {
         setProgramCode("");
         setStartingDate(moment());
         setDuration(3);
+        setLoading(false);
       } else {
         throw new Error(data.message || "Unknown Error");
       }
     } catch (error) {
       alert(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -215,7 +221,8 @@ const Index = () => {
                       );
                     })}
                     <Grid item sx={12} sm={4}>
-                      <Button
+                      <LoadingButton
+                        disabled={loading}
                         variant="contained"
                         fullWidth
                         size="large"
@@ -230,7 +237,7 @@ const Index = () => {
                         }}
                       >
                         Get Started
-                      </Button>
+                      </LoadingButton>
                     </Grid>
                   </Grid>
                 </Box>
@@ -272,7 +279,8 @@ const Index = () => {
           <DateCalendar value={startingDate} onChange={setStartingDate} />
         </DialogContent>
         <DialogActions>
-          <Button
+          <LoadingButton
+            disabled={loading}
             sx={{ borderRadius: "10px" }}
             onClick={() => {
               setEnrollDialog(false);
@@ -280,14 +288,15 @@ const Index = () => {
             }}
           >
             Close
-          </Button>
-          <Button
+          </LoadingButton>
+          <LoadingButton
+            loading={loading}
             sx={{ borderRadius: "10px" }}
             variant="contained"
             onClick={() => enroll(programCode, duration, startingDate)}
           >
             Submit
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </Dialog>
     </>
