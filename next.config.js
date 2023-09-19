@@ -5,6 +5,7 @@ const nextConfig = {
   env: {
     MONGO_DB_URI:
       "mongodb+srv://fusion-fitness:fusion-fitness@fusion-fitness.6mre53d.mongodb.net/fusion-fitness?retryWrites=true&w=majority",
+    ADMIN_PASSWORD: "fusion-fitness-admin",
   },
   transpilePackages: [
     "@mui/lab",
