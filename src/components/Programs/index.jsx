@@ -126,7 +126,7 @@ const Index = () => {
       const data = await response.json();
 
       if (data.success) {
-        alert("Enrolled Successfully");
+        alert("Purchased Successfully");
         setEnrollDialog(false);
         setProgramCode("");
         setStartingDate(moment());
