@@ -14,7 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "@/redux/slices/AuthSlice";
 
-const MENU_ITEMS = ["Overview", "Gallery", "Amenities", "Trainers", "Programs"];
+const MENU_ITEMS = ["Overview", "Amenities", "Trainers", "Gallery", "Programs"];
 
 const Navbar = () => {
   const clamp = useClamp();
